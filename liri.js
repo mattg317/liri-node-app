@@ -1,4 +1,5 @@
 
+
 var request = require('request');
 var Twitter = require('twitter');
 var spotify = require('spotify');
@@ -11,7 +12,13 @@ var keys = require('./keys');
 // console.log("BEar key "+ keys.bear_token)
 // console.log(.log(keys.twitterKeys.access_token_key)
 
-var commands = ['my-tweets', 'spotify-this-song', 'movie-this', 'do-what-its-says'];
+var commands = ['my-tweets', 'spotify-this-song', 'movie-this', 'do-what-it-says'];
+
+var input = process.argv[3];
+for(var i =4, n= process.argv.length; i<n; i++){
+	input = input + " "+  process.argv[i];
+}
+console.log(input)
 
 
 var client = new Twitter({
@@ -22,6 +29,8 @@ var client = new Twitter({
 
 });
 // console.log(client);
+
+function tweeter(){
 var params = {screen_name: 'rolemodel15'};
 	client.get('statuses/user_timeline',params, function(error, tweets, response){
 		if(!error){
@@ -30,9 +39,9 @@ var params = {screen_name: 'rolemodel15'};
 				console.log('--------');
 			}
 		}
-		// console.log(response);
-	});
 
+	});
+}
 //Spotify function=============================================================================
 
 function playSpotify(song){
@@ -76,32 +85,84 @@ function movieLookUp(movieName){
 		});
 }
 
-//Spotify===================================================================================
-if(process.argv[2]=== 'spotify'){
+//Production===================================================================================
+if(process.argv[2]== 'my-tweets'){
 
-	playSpotify("What's my age again");
-};
+	tweeter();
 
+	}
 
-// //Movie Request============
-if(process.argv[2]=='movie'){
+if(process.argv[2]=== 'spotify-this-song'){
 
-	movieLookUp('Friday Night Lights')
+	playSpotify(input);
 
 	};
 
-if(process.argv[2]=='says'){
 
-	fs.readFile('random.txt', 'utf8', function(error, data){
+// //Movie Request============
+// if(process.argv[2]=='movie-this'){
 
-		if(error){
-			return console.log(error);
+// 	if(input == null){
+// 			movieLookUp('Mr. Nobody')
+// 		}else{
+
+// 			movieLookUp(input);
+// 		}
+
+// 	};
+
+// if(process.argv[2]=='do-what-it-says'){
+
+// 	fs.readFile('random.txt', 'utf8', function(error, data){
+
+// 		if(error){
+// 			return console.log(error);
+// 		}
+// 		var array = data.split(',');
+// 		console.log(array[1]);
+// 		playSpotify(array[1])
+// 	})
+
+// }
+
+command= process.argv[2]
+input = process.argv[3]
+
+function runLiri(command, input){
+
+	if(command== 'my-tweets'){
+		tweeter();
+	}
+
+	else if(command=='movie-this'){
+		if(input == null){
+				movieLookUp('Mr. Nobody')
+		}else{
+				movieLookUp(input);
+			}
+	}
+
+	else if(command=='spotify-this-song'){
+		if(input == null){
+			playSpotify('The Sign');
+		}else
+			playSpotify(input);
 		}
-		console.log(data);
-	})
+	}
 
-}
+	else if(command=='do-what-it-says'){
 
-if(process.argv[2]== 'tweet'){
-	tweet();
-}
+			fs.readFile('random.txt', 'utf8', function(error, data){
+
+				if(error){
+					return console.log(error);
+				}
+				var array = data.split(',');
+				command = array[0];
+				input = array[1];
+
+				runLiri(command, input);
+			})
+
+	} 
+};
