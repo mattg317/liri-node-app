@@ -1,5 +1,3 @@
-
-
 var request = require('request');
 var Twitter = require('twitter');
 var spotify = require('spotify');
@@ -8,17 +6,14 @@ var fs = require('fs');
 var keys = require('./keys');
 
 
-
-// console.log("BEar key "+ keys.bear_token)
-// console.log(.log(keys.twitterKeys.access_token_key)
-
 var commands = ['my-tweets', 'spotify-this-song', 'movie-this', 'do-what-it-says'];
 
-var input = process.argv[3];
-for(var i =4, n= process.argv.length; i<n; i++){
-	input = input + " "+  process.argv[i];
-}
-console.log(input)
+// var input = process.argv[3];
+// for(var i =4, n= process.argv.length; i<n; i++){
+// 	input = input + " "+  process.arg
+// 	v[i];
+// }
+// console.log(input)
 
 
 var client = new Twitter({
@@ -28,8 +23,8 @@ var client = new Twitter({
 	access_token_secret: keys.twitterKeys.access_token_secret,
 
 });
-// console.log(client);
 
+//Twitter function=======================================================
 function tweeter(){
 var params = {screen_name: 'rolemodel15'};
 	client.get('statuses/user_timeline',params, function(error, tweets, response){
@@ -86,47 +81,14 @@ function movieLookUp(movieName){
 }
 
 //Production===================================================================================
-if(process.argv[2]== 'my-tweets'){
 
-	tweeter();
+var command= process.argv[2]
 
-	}
-
-if(process.argv[2]=== 'spotify-this-song'){
-
-	playSpotify(input);
-
-	};
-
-
-// //Movie Request============
-// if(process.argv[2]=='movie-this'){
-
-// 	if(input == null){
-// 			movieLookUp('Mr. Nobody')
-// 		}else{
-
-// 			movieLookUp(input);
-// 		}
-
-// 	};
-
-// if(process.argv[2]=='do-what-it-says'){
-
-// 	fs.readFile('random.txt', 'utf8', function(error, data){
-
-// 		if(error){
-// 			return console.log(error);
-// 		}
-// 		var array = data.split(',');
-// 		console.log(array[1]);
-// 		playSpotify(array[1])
-// 	})
-
-// }
-
-command= process.argv[2]
-input = process.argv[3]
+var input = process.argv[3];
+for(var i =4, n= process.argv.length; i<n; i++){
+	input = input + " "+  process.argv[i];
+}
+console.log(input)
 
 function runLiri(command, input){
 
@@ -145,7 +107,7 @@ function runLiri(command, input){
 	else if(command=='spotify-this-song'){
 		if(input == null){
 			playSpotify('The Sign');
-		}else
+		}else{
 			playSpotify(input);
 		}
 	}
@@ -158,11 +120,24 @@ function runLiri(command, input){
 					return console.log(error);
 				}
 				var array = data.split(',');
-				command = array[0];
-				input = array[1];
-
-				runLiri(command, input);
+				var commands = array[0];
+				var inputs = array[1];
+				console.log(commands);
+				runLiri(commands, inputs);
 			})
 
 	} 
+	else{
+		console.log('please re run with a valid command')
+	}
+
+	//log to log file
+	fs.appendFile('./log.txt', command+" ", function(err)
+	{
+		if(err){
+			console.log(err);
+		}
+	})
 };
+
+runLiri(command, input);
