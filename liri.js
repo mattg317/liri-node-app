@@ -8,13 +8,6 @@ var keys = require('./keys');
 
 var commands = ['my-tweets', 'spotify-this-song', 'movie-this', 'do-what-it-says'];
 
-// var input = process.argv[3];
-// for(var i =4, n= process.argv.length; i<n; i++){
-// 	input = input + " "+  process.arg
-// 	v[i];
-// }
-// console.log(input)
-
 
 var client = new Twitter({
 	consumer_key: keys.twitterKeys.consumer_key,
@@ -88,7 +81,7 @@ var input = process.argv[3];
 for(var i =4, n= process.argv.length; i<n; i++){
 	input = input + " "+  process.argv[i];
 }
-console.log(input)
+// console.log(input)
 
 function runLiri(command, input){
 
@@ -106,7 +99,7 @@ function runLiri(command, input){
 
 	else if(command=='spotify-this-song'){
 		if(input == null){
-			playSpotify('The Sign');
+			playSpotify('The Sign Ace of Base');
 		}else{
 			playSpotify(input);
 		}
